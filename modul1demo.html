@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLARRY</title>
+    <style>
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Playfair Display', serif;
+            background-color: #FFB6C1;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-grow: 1;
+        }
+        nav a {
+            color: black;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 14px;
+        }
+        .login-btn {
+            border: 2px solid white;
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .hero-text {
+            flex: 1;
+        }
+        h1 {
+            font-size: 64px;
+            font-weight: normal;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+        .explore-btn {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .hero-image {
+            flex: 1;
+            text-align: right;
+        }
+        .hero-image img {
+            width: 60%;
+            border-radius: 20px;
+        }
+        .image-caption {
+            font-size: 24px;
+            margin-top: 10px;
+            max-width: 80%;
+            margin-left: auto;
+        }
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: black;
+            border-radius: 50%;
+            margin: 0 5px;
+        }
+        .testimonials {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+        .testimonial {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid black;
+            font-size: 16px;
+            text-align: center;
+        }
+        .testimonial:last-child {
+            border-right: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">CLARRY</div>
+            <nav>
+                <a href="#">HOME</a>
+                <a href="#">SHOP</a>
+                <a href="#">FEATURES</a>
+                <a href="#">CONTACT</a>
+            </nav>
+            <a href="#" class="login-btn">Login</a>
+        </header>
+        <div class="hero">
+            <div class="hero-text">
+                <h1>Explore And </h1>
+                <h1>Create Your</h1>
+                <h1> Unique Style</h1>
+                <a href="#" class="explore-btn">Explore Now</a>
+            </div>
+            <div class="hero-image">
+                <img src="Ella.jpeg" alt="Beach house with person">
+                <p class="image-caption">Express yourself and be an authentic individual by experimenting and developing a personal style that reflects your true identity.</p>
+            </div>
+        </div>
+        <div class="dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="testimonials">
+            <div class="testimonial">
+                "Find Inspiration, Build Your Signature Style."
+            </div>
+            <div class="testimonial">
+                "Explore, Evolve, Express Your True Style."
+            </div>
+            <div class="testimonial">
+                "Your Style, Your Canvas - Make It Yours."
+            </div>
+        </div>
+    </div>
+</body>
+</html>
