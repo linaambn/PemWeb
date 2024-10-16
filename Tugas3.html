@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pendaftaran</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Form Pendaftaran</h2>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="name">Nama:</label>
+                <input type="text" id="name" name="name" >
+            </div>
+            <div class="sform-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" >
+            </div>
+            <div class="form-group">
+                <label for="Alamat_lengkap">Alamat lengkap:</label>
+                <input type="Alamat_lengkap" id="Alamat_lengkap" name="Alamat_lengkap">
+            </div>
+            <button type="submit">Daftar</button>
+        </div>
+        </form>
+    </div>
+    <div id="alert" class="alert">
+        <p id="alertMessage"></p>
+        <button id="closeAlert">OK</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
