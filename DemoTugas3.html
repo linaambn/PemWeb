@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #4a90e2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .todo-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .todo-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .input-group button {
+            padding: 10px;
+            border: none;
+            background-color: #4a90e2;
+            color: white;
+            cursor: pointer;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .input-group button:hover {
+            background-color: #357ABD;
+        }
+
+        .todo-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #e6f7ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .todo-item input[type="text"] {
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            width: 80%;
+        }
+
+        .todo-item button {
+            background-color: #ff4d4f;
+            border: none;
+            padding: 5px 10px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .todo-item button:hover {
+            background-color: #e60000;
+        }
+
+        .edit-button {
+            background-color: #ffc107;
+            border: none;
+            padding: 5px 10px;
+            color: white;
+            cursor: pointer;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .edit-button:hover {
+            background-color: #d39e00;
+        }
+    </style>
+</head>
+<body>
+
+<div class="todo-container">
+    <h2>To-Do List</h2>
+    <div class="input-group">
+        <input type="text" id="todo-input" placeholder="Enter a new task">
+        <button onclick="addTodo()">Add</button>
+    </div>
+    <ul id="todo-list" class="todo-list">
+        <!-- List items will appear here -->
+    </ul>
+</div>
+
+<script>
+    function addTodo() {
+        const todoInput = document.getElementById('todo-input');
+        const todoText = todoInput.value.trim();
+
+        if (todoText === "") {
+            alert("Please enter a task.");
+            return;
+        }
+
+        const todoList = document.getElementById('todo-list');
+
+        // Create list item
+        const listItem = document.createElement('li');
+        listItem.className = 'todo-item';
+
+        // Create input field for editing task
+        const todoTextInput = document.createElement('input');
+        todoTextInput.type = 'text';
+        todoTextInput.value = todoText;
+        todoTextInput.readOnly = true;
+
+        // Create edit button
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.className = 'edit-button';
+        editButton.onclick = function () {
+            if (todoTextInput.readOnly) {
+                todoTextInput.readOnly = false;
+                editButton.textContent = 'Save';
+            } else {
+                todoTextInput.readOnly = true;
+                editButton.textContent = 'Edit';
+            }
+        };
+
+        // Create delete button
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = function () {
+            todoList.removeChild(listItem);
+        };
+
+        // Add text input and buttons to the list item
+        listItem.appendChild(todoTextInput);
+        listItem.appendChild(editButton);
+        listItem.appendChild(deleteButton);
+
+        // Add list item to the to-do list
+        todoList.appendChild(listItem);
+
+        // Clear the input field after adding
+        todoInput.value = "";
+    }
+</script>
+
+</body>
+</html>
