@@ -1,0 +1,569 @@
+<?php
+// Aktifkan error reporting untuk debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Konfigurasi database langsung di file ini
+$host = 'localhost'; // Nama host
+$db_name = 'fashion_claary'; // Nama database
+$username = 'root'; // Username database
+$password = ''; // Password database (kosong jika menggunakan default XAMPP/WAMP)
+
+// Koneksi ke database menggunakan PDO
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$db_name", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Koneksi ke database gagal: " . $e->getMessage());
+}
+
+// Proses jika form dikirim
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Ambil data dari form dan sanitasi
+    $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $message = filter_var($_POST['message'], FILTER_SANITIZE_STRING);
+
+    // Validasi input
+    if (!empty($name) && !empty($email) && !empty($message)) {
+        try {
+            // Siapkan pernyataan SQL untuk menyimpan data
+            $stmt = $conn->prepare("INSERT INTO reviews (name, email, message) VALUES (:name, :email, :message)");
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':message', $message);
+            $stmt->execute();
+
+            // Pesan sukses
+            echo "<script>alert('Pesan berhasil dikirim ke database!'); window.location.href = 'contact_us.php';</script>";
+        } catch (PDOException $e) {
+            // Tangani error jika ada masalah dengan database
+            echo "<script>alert('Terjadi kesalahan: " . $e->getMessage() . "');</script>";
+        }
+    } else {
+        // Validasi input kosong
+        echo "<script>alert('Semua kolom harus diisi!');</script>";
+    }
+}
+?>
+
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontak - FashionClarry</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>FashionClarry</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="contact-section">
+        <h2>Kontak Kami</h2>
+        <form action="contact_us.php" method="POST">
+            <input type="text" name="name" placeholder="Nama Anda" required>
+            <input type="email" name="email" placeholder="Email Anda" required>
+            <textarea name="message" placeholder="Pesan Anda" required></textarea>
+            <button type="submit">Kirim Pesan</button>
+        </form>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-item">
+                <img src="web2.png" alt="Website Icon">
+                <span>www.FashionClarrysite.com</span>
+            </div>
+            <div class="footer-item">
+                <img src="gmail2.png" alt="Email Icon">
+                <span>FashionClarry@gmail.com</span>
+            </div>
+            <div class="footer-item">
+                <img src="lokasi3.jpg" alt="Location Icon">
+                <span>Jiku Besar, Kota Namlea, Provinsi Maluku 97571</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FashionClarry</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .hero {
+            background-image: url('ELLA.jpeg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            height: 100%;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        nav {
+            position: absolute;
+            top: 20px;
+            width: 85%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav ul.menu {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul.menu li {
+            margin-left: 20px;
+        }
+
+        nav ul.menu li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hero-text {
+            text-align: center;
+        }
+
+        .hero-text h2 {
+            font-size: 3.5rem;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+
+        .hero-text button {
+            padding: 12px 24px;
+            background-color: #ff4d4d;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 25px;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 80px 0;
+            background-color: #f8f8f8;
+            text-align: center;
+        }
+
+        .about-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            width: 70%;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 80px 0;
+            background-color: pink;
+            text-align: center;
+        }
+
+        .services-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+
+        .service-list {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .service-item {
+            background-color: #f4f4f4;
+            padding: 20px;
+            width: 30%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            border-radius: 10px;
+        }
+
+        .service-item:hover {
+            transform: scale(1.05);
+        }
+
+        .service-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .service-item p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        /* Image Styles */
+        .img-fashion {
+            width: 85%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .img-brand {
+            width: 80%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .img-photoshoot {
+            width: 77%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 80px 0;
+            background-color: pink;
+            display: none;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .gallery-item {
+            width: 30%;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .select-button {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 16px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        .gallery-item.selected .select-button {
+            display: block;
+        }
+
+        .gallery-item.selected img {
+            opacity: 0.7;
+        }
+
+        /* Navigation for Gallery */
+        .gallery-nav {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .back-button {
+            padding: 12px 24px;
+            background-color: #ff4d4d;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 25px;
+            margin-bottom: 20px;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 60px 0;
+            background-color: #333;
+            color: white;
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-section form {
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        .contact-section input, 
+        .contact-section textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            outline: none;
+        }
+
+        .contact-section button {
+            padding: 12px 24px;
+            background-color: #ff4d4d;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 25px;
+        }
+
+        /* Main Content Section */
+        #main-content {
+            display: block;
+        }
+        /* Footer Styles */
+        footer {
+            background-color: pink;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        footer .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        footer .footer-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        footer .footer-item img {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Smooth scroll functionality
+            $('nav ul.menu li a').click(function(e) {
+                e.preventDefault();
+                $('html, body').animate({
+                    scrollTop: $($(this).attr('href')).offset().top
+                }, 800);
+            });
+
+            // Form submission alert
+            $('#contact-form').submit(function(e) {
+                e.preventDefault();
+                alert('Thank you for your message. We will contact you soon!');
+                $(this).trigger('reset');
+            });
+
+            // Gallery functionality
+            $('.hero-text button').click(function() {
+                $('#main-content').hide();
+                $('.gallery-section').show();
+            });
+
+            $('.back-button').click(function() {
+                $('.gallery-section').hide();
+                $('#main-content').show();
+            });
+
+            // Gallery item selection
+            $('.gallery-item img').click(function() {
+                const parent = $(this).parent();
+                if (parent.hasClass('selected')) {
+                    parent.removeClass('selected');
+                } else {
+                    parent.addClass('selected');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="main-content">
+        <header class="hero">
+            <div class="overlay">
+                <nav>
+                    <div class="logo">
+                        <h1>FashionClarry</h1>
+                    </div>
+                    <ul class="menu">
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="hero-text">
+                    <h2>We Style the World</h2>
+                    <p>Your fashion, our passion. Creating iconic looks that stand out.</p>
+                    <button>Explore Now</button>
+                </div>
+            </div>
+        </header>
+
+        <section id="about" class="about-section">
+            <div class="container">
+                <h2>About FashionClarry</h2>
+                <p>FashionClarry is a cutting-edge fashion agency, known for creating unique and memorable styles. We work with top fashion brands to deliver high-end designs that define the future of fashion.</p>
+            </div>
+        </section>
+
+        <section id="services" class="services-section">
+            <div class="container">
+                <h2>Our Services</h2>
+                <div class="service-list">
+                    <div class="service-item">
+                        <img src="ella1.jpeg" alt="Fashion Design" class="img-fashion">
+                        <h3>Fashion Design</h3>
+                        <p>Creating innovative and stylish collections that captivate the global market.</p>
+                    </div>
+                    <div class="service-item">
+                        <img src="ella2.jpeg" alt="Brand Consulting" class="img-brand">
+                        <h3>Brand Consulting</h3>
+                        <p>Offering professional consulting services to elevate your fashion brand.</p>
+                    </div>
+                    <div class="service-item">
+                        <img src="ella3.jpeg" alt="Photoshoots" class="img-photoshoot">
+                        <h3>Photoshoots</h3>
+                        <p>End-to-end photoshoot services with top models and photographers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer id="contact" class="contact-section">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <form id="contact-form">
+                    <input type="text" id="name" name="name" placeholder="Your Name" required>
+                    <input type="email" id="email" name="email" placeholder="Your Email" required>
+                    <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </footer>
+    </div>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-item">
+                <img src="web2.png" alt="Website Icon">
+                <span>www.FashionClarrysite.com</span>
+            </div>
+            <div class="footer-item">
+                <img src="gmail2.png" alt="Email Icon">
+                <span>FashionClarry@gmail.com</span>
+            </div>
+            <div class="footer-item">
+                <img src="lokasi3.jpg" alt="Location Icon">
+                <span>Jiku Besar,Kota Namlea, Provinsi maluku 97571</span>
+            </div>
+        </div>
+    </footer>
+    
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="gallery-nav">
+                <button class="back-button">Back to Home</button>
+                <h1>Select Your Fashion Style</h1>
+            </div>
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="ella4.jpeg" alt="Fashion Item 1">
+                    <button class="select-button">Select</button>
+                </div>
+                <div class="gallery-item">
+                    <img src="ella5.jpeg" alt="Fashion Item 2">
+                    <button class="select-button">Select</button>
+                </div>
+                <div class="gallery-item">
+                    <img src="ella6.jpeg" alt="Fashion Item 3">
+                    <button class="select-button">Select</button>
+                </div>
+                <div class="gallery-item">
+                    <img src="ella7.jpeg" alt="Fashion Item 4">
+                    <button class="select-button">Select</button>
+                </div>
+                <div class="gallery-item">
+                    <img src="ella8.jpeg" alt="Fashion Item 5">
+                    <button class="select-button">Select</button>
+                </div>
+                <div class="gallery-item">
+                    <img src="ella9.jpeg" alt="Fashion Item 6">
+                    <button class="select-button">Select</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
